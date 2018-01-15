@@ -2,9 +2,14 @@
 import { isObject, size, toUpper } from 'lodash';
 import moment from 'moment';
 
-function _log(category: string, level: string, ...args: Array<any>) {
+function _log(category: string, level: string, ...args: Array<any>): void {
   const now = moment().format();
-  console.log(`${now} ${level} [${category}]`, ...args); // eslint-disable-line no-console
+
+  if (level === 'ERROR') {
+    return console.error(`${now} ${level} [${category}]`, ...args); // eslint-disable-line no-console
+  }
+
+  return console.log(`${now} ${level} [${category}]`, ...args); // eslint-disable-line no-console
 }
 
 export default function Logger(category: string) {
