@@ -9,7 +9,13 @@ const logLevels = {
   ERROR: 'ERROR',
 };
 
+let IS_ENABLED = true;
+
 function _log(category: string, level: string, ...args: Array<any>): void {
+  if (!IS_ENABLED) {
+    return;
+  }
+
   const now = moment().format();
 
   if (level === logLevels.ERROR) {
@@ -23,6 +29,14 @@ export default function Logger(category: string, requestId: string) {
   this.category = category;
   this.requestId = requestId;
 }
+
+Logger.disable = function () {
+  IS_ENABLED = false;
+};
+
+Logger.enable = function () {
+  IS_ENABLED = true;
+};
 
 function createLogLevel(level: string): Function {
   return function logWithLevel(...args: Array<any>) {
