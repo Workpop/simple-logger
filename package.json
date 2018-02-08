@@ -11,7 +11,7 @@
     "lint": "eslint ./src",
     "flow": "flow check",
     "release": "standard-version",
-    "testonly": "mocha ./__tests__/**/*.test.js --compilers js:babel-register",
+    "testonly": "mocha ./__tests__/**/*.test.js --require babel-core/register",
     "test:watch": "npm run testonly -- --watch --watch-extensions js"
   },
   "dependencies": {
