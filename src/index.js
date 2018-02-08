@@ -28,6 +28,7 @@ function createLogLevel(level: string): Function {
   return function logWithLevel(...args: Array<any>) {
     if (this.requestId) {
       _log(this.category, level, `RequestId: ${this.requestId}`,  ...args);
+      return;
     }
     _log(this.category, level, ...args);
   };
