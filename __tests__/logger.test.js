@@ -13,6 +13,7 @@ describe('Logger', function () {
 
     beforeEach(function () {
       sandbox = sinon.sandbox.create();
+      Logger.enable();  // ensure logger is enabled at the start of each test
     });
 
     afterEach(function () {
@@ -28,6 +29,23 @@ describe('Logger', function () {
       const logSpy = sandbox.spy(console, 'log');
       requestIdLogger.info('log line text');
       expect(logSpy.callCount).to.equal(1);
+    });
+
+    it('should NOT log anything regardless of instance when Logger.disable() called', function () {
+      const logSpy = sandbox.spy(console, 'log');
+      Logger.disable();
+      simpleLogging.info('SUP');
+      requestIdLogger.info('log line text');
+      expect(logSpy.callCount).to.equal(0);
+    });
+
+    it('should log when Logger.disable() called followed by Logger.enable()', function () {
+      const logSpy = sandbox.spy(console, 'log');
+      Logger.disable();
+      Logger.enable();
+      simpleLogging.info('SUP');
+      requestIdLogger.info('log line text');
+      expect(logSpy.callCount).to.equal(2);
     });
 
   });
