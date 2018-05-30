@@ -1,5 +1,5 @@
 // @flow
-import { isObject, size, toUpper } from 'lodash';
+import { size, isObject, toUpper, partial } from 'lodash';
 import moment from 'moment';
 
 const logLevels = {
@@ -8,27 +8,51 @@ const logLevels = {
   WARN: 'WARN',
   ERROR: 'ERROR',
 };
+const JSON_MODE = process.env.NODE_ENV === 'production';
 
 let IS_ENABLED = true;
-
-function _log(category: string, level: string, ...args: Array<any>): void {
-  if (!IS_ENABLED) {
-    return;
-  }
-
-  const now = moment().format();
-
-  if (level === logLevels.ERROR) {
-    return console.error(`${now} ${level} [${category}]`, ...args); // eslint-disable-line no-console
-  }
-
-  return console.log(`${now} ${level} [${category}]`, ...args); // eslint-disable-line no-console
-}
 
 export default function Logger(category: string, requestId: string) {
   this.category = category;
   this.requestId = requestId;
 }
+
+Logger.prototype.log = function log(level: string, ...args: Array<any>): void {
+  if (!IS_ENABLED) {
+    return;
+  }
+
+
+  const base = {
+    _ts: moment().format(),
+    _level: toUpper(level),
+    _category: this.category,
+    _requestId: this.requestId,
+  };
+
+  let ll;
+
+  if (size(args) === 1 && isObject(args[0])) {
+    ll = {
+      ...base,
+      ...args[0],
+    };
+  } else {
+    ll = {
+      ...base,
+      message: args.join(' '),
+    };
+  }
+
+
+  const stream = level === logLevels.ERROR ? console.error : console.log;  //eslint-disable-line no-console
+
+  if (JSON_MODE) {
+    return stream(JSON.stringify(ll));
+  }
+
+  return stream(`${ll._ts} ${ll._level} [${ll._category}]`, ...args);
+};
 
 Logger.disable = function () {
   IS_ENABLED = false;
@@ -38,29 +62,11 @@ Logger.enable = function () {
   IS_ENABLED = true;
 };
 
-function createLogLevel(level: string): Function {
-  return function logWithLevel(...args: Array<any>) {
-    if (this.requestId) {
-      _log(this.category, level, `RequestId: ${this.requestId}`,  ...args);
-      return;
-    }
-    _log(this.category, level, ...args);
-  };
-}
+Logger.prototype.trace = partial(Logger.prototype.log, logLevels.TRACE);
 
-Logger.prototype.trace = createLogLevel(logLevels.TRACE);
+Logger.prototype.info = partial(Logger.prototype.log, logLevels.INFO);
 
-Logger.prototype.info = createLogLevel(logLevels.INFO);
+Logger.prototype.warn = partial(Logger.prototype.log, logLevels.WARN);
 
-Logger.prototype.warn = createLogLevel(logLevels.WARN);
+Logger.prototype.error = partial(Logger.prototype.log, logLevels.ERROR);
 
-Logger.prototype.error = createLogLevel(logLevels.ERROR);
-
-Logger.prototype.log = function log(level: string, ...args: Array<any>) {
-  if (size(args) === 1 && isObject(args[0])) {
-    _log(this.category, toUpper(level), JSON.stringify(args[0]));
-    return;
-  }
-
-  _log(this.category, toUpper(level), ...args);
-};
