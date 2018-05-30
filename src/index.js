@@ -1,5 +1,5 @@
 // @flow
-import { map, size, isObject, toUpper, partial } from 'lodash';
+import { isString, map, size, isObject, toUpper, partial } from 'lodash';
 import moment from 'moment';
 import { inspect } from 'util';
 
@@ -41,7 +41,12 @@ Logger.prototype.log = function log(level: string, ...args: Array<any>): void {
   } else {
     ll = {
       ...base,
-      message: map(args, inspect).join(' '),
+      message: map(args, (x: any): String => {
+        if (isString(x)) {
+          return x;
+        }
+        return inspect(x);
+      }).join(' '),
     };
   }
 
