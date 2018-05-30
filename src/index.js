@@ -1,6 +1,7 @@
 // @flow
-import { size, isObject, toUpper, partial } from 'lodash';
+import { map, size, isObject, toUpper, partial } from 'lodash';
 import moment from 'moment';
+import { inspect } from 'util';
 
 const logLevels = {
   TRACE: 'TRACE',
@@ -40,7 +41,7 @@ Logger.prototype.log = function log(level: string, ...args: Array<any>): void {
   } else {
     ll = {
       ...base,
-      message: args.join(' '),
+      message: map(args, inspect).join(' '),
     };
   }
 
