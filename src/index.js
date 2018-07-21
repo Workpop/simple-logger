@@ -1,5 +1,5 @@
 // @flow
-import { isString, map, size, isObject, toUpper, partial } from 'lodash';
+import { isString, map, size, isObject, toUpper, partial, isError } from 'lodash';
 import moment from 'moment';
 import { inspect } from 'util';
 
@@ -23,7 +23,6 @@ Logger.prototype.log = function log(level: string, ...args: Array<any>): void {
     return;
   }
 
-
   const base = {
     _ts: moment().format(),
     _level: toUpper(level),
@@ -33,7 +32,17 @@ Logger.prototype.log = function log(level: string, ...args: Array<any>): void {
 
   let ll;
 
-  if (size(args) === 1 && isObject(args[0])) {
+  if (size(args) === 1 && isError(args[0])) {
+    const e = args[0];
+    ll = {
+      ...base,
+      error: {
+        name: e.name,
+        message: e.message,
+        stack: inspect(e),
+      },
+    };
+  } else if (size(args) === 1 && isObject(args[0])) {
     ll = {
       ...base,
       ...args[0],
@@ -75,4 +84,3 @@ Logger.prototype.info = partial(Logger.prototype.log, logLevels.INFO);
 Logger.prototype.warn = partial(Logger.prototype.log, logLevels.WARN);
 
 Logger.prototype.error = partial(Logger.prototype.log, logLevels.ERROR);
-
