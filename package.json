@@ -10,6 +10,7 @@
     "build": "babel ./src --ignore test --out-dir ./lib",
     "lint": "eslint ./src",
     "flow": "flow check",
+    "prepublishOnly": "npm run build",
     "release": "standard-version",
     "testonly": "mocha ./__tests__/**/*.test.js --require babel-core/register",
     "test:watch": "npm run testonly -- --watch --watch-extensions js"
