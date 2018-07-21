@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.4"></a>
+## [1.3.4](https://github.com/Workpop/simple-logger/compare/v1.3.3...v1.3.4) (2018-07-21)
+
+
+### Bug Fixes
+
+* **scripts:** prepublishOnly to ensure build before publish ([3241345](https://github.com/Workpop/simple-logger/commit/3241345))
+
+
+
 <a name="1.3.3"></a>
 ## [1.3.3](https://github.com/Workpop/simple-logger/compare/v1.3.2...v1.3.3) (2018-07-21)
 
