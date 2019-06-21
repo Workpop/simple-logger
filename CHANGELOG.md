@@ -1,6 +1,15 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [1.4.0](https://github.com/Workpop/simple-logger/compare/v1.3.4...v1.4.0) (2019-06-21)
+
+
+### Features
+
+* Use TypeScript & export .d.ts as part of the package ([4419fca](https://github.com/Workpop/simple-logger/commit/4419fca))
+
+
 
 <a name="1.3.4"></a>
 ## [1.3.4](https://github.com/Workpop/simple-logger/compare/v1.3.3...v1.3.4) (2018-07-21)
