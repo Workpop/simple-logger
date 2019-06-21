@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
-    "prepublish": "yarn run build",
+    "prepublishOnly": "yarn run build",
     "release": "standard-version",
     "testonly": "mocha ./__tests__/**/*.ts --require ts-node/register",
     "test:watch": "yarn testonly --watch --watch-extensions ts"

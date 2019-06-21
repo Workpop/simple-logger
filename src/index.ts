@@ -17,7 +17,7 @@ let globalEnabled: boolean = true;
 /**
  * Log messages to process console in JSON or plain-text format
  */
-export class Logger {
+export default class Logger {
 
   /**
    * Globally disable futher output for all logger instances

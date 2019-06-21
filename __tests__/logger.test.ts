@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
-import { Logger } from '../src';
-
+import Logger from '../src';
 
 describe('Logger', () => {
 
